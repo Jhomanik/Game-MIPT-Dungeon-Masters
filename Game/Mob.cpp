@@ -1,69 +1,112 @@
-#include <SFML/Graphics.hpp>
 #include "Mob.h"
 
-Mob::Mob(){
-	m_position = Vector2f(0,0);
-	m_size.x = 1;
-	m_size.y = 1;
+Mob::Mob():Object(){
+	
 
 	m_health = 100.;
 	m_speed = 0.5;
 	m_dir = STOP;
-
-	//поставить assert на ошибку загрузки
-	m_image.loadFromFile("images\\shrek-pixel.png");
-	m_texture.loadFromImage(m_image);
-	m_sprite.setTexture(m_texture);
-}
-Vector2f Mob::Get_coordinate() {
-	return m_position;
+	image.loadFromFile("images\\default.png");
+	texture.loadFromImage(image);
+	sprite.setTexture(texture);
+	sprite.setPosition(position);
 }
 
-void Mob::Set_texture(String way,IntRect rect) {
+Mob::Mob(float left, float top, float w, float h, std::string o_name, std::string o_type, std::string sprite_src, sf::IntRect frameRect):Object(left,top,w,h,o_name,o_type) {
+	m_health = 100;
+	m_speed = 0.5;
+	m_dir = STOP;
+	image.loadFromFile(sprite_src);
+	texture.loadFromImage(image);
+	sprite.setTexture(texture);
+	sprite.setTextureRect(frameRect);
+	sprite.setPosition(position);
+}
+
+Mob::Mob(sf::Vector2f pos, sf::Vector2f size, std::string o_name, std::string o_type, std::string sprite_src, sf::IntRect frameRect) :Object(pos,size, o_name, o_type) {
+	m_health = 100;
+	m_speed = 0.5;
+	m_dir = STOP;
 	
-	//поставить assert на ошибку загрузки	
-	m_image.loadFromFile(way);
-	m_texture.loadFromImage(m_image);
-	m_sprite.setTextureRect(rect);
-}
-void Mob::Set_position(Vector2f position) {
-	m_position = position;
+	image.loadFromFile(sprite_src);
+	texture.loadFromImage(image);
+	sprite.setTexture(texture);
+	sprite.setTextureRect(frameRect);
+	sprite.setPosition(position);
 }
 
-void Mob::move(m_state direction) {
-	m_dir = direction;
+
+
+
+void Mob::SetSprite(std::string src, sf::IntRect frameRect) {
+	image.loadFromFile(src);
+	texture.loadFromImage(image);
+	sprite.setTexture(texture);
+	sprite.setTextureRect(frameRect);
+	size = sf::Vector2f(frameRect.height, frameRect.width);
 }
-void Mob::update(float elapsed_time) {
+
+void Mob::SetSpeed(float speed) {
+	m_speed = speed;
+}
+void Mob::SetLife(float health) {
+	m_health = health;
+}
+void Mob::SetDiraction(m_state dir) {
+	m_dir = dir;
+}
+void Mob::SetMobParams(float health, float speed) {
+	m_health = health;
+	m_speed = speed;
+}
+
+void Mob::draw(sf::RenderWindow* window) {
+	sprite.setPosition(position);
+	window->draw(sprite);
+}
+
+void Mob::CheckCollisionsWithMap(std::vector<Object*>&solid, float Dx, float Dy) {
+	for (auto o : solid) {
+		
+		if (GetRect().intersects(o->GetRect())) {
+			float x = position.x, y = position.y;
+			if (Dy > 0) { y = o->GetPos().y - size.y; }
+			if (Dy < 0) { y = o->GetPos().y + o->GetSize().y;    }
+			if (Dx > 0) { x = o->GetPos().x - size.x; }
+			if (Dx < 0) { x = o->GetPos().x + o->GetSize().x;}
+			position = sf::Vector2f(x, y);
+			
+		}
+	}
+
+}
+void Mob::update(std::vector <Object*> & solid, float elapsed_time) {
 	//Изменение направления в зависимости от движения 
+	float dx = 0, dy = 0;
 	switch (m_dir)
 	{
 	case UP:
-		m_position += Vector2f(0, -elapsed_time * m_speed);
+		dy = -m_speed;
 		break;
 	case DOWN:
-		m_position += Vector2f(0, elapsed_time * m_speed);
+		dy = m_speed;
 		break;
 	case LEFT:
-		m_position += Vector2f(-elapsed_time * m_speed,0);
+		dx = -m_speed;
 		break;
 	case RIGHT:
-		m_position += Vector2f(elapsed_time * m_speed,0);
+		dx = m_speed;
 		break;
 	default:
 
 		break;
 	}
-	m_sprite.setPosition(m_position);
-}
-void Mob::draw(RenderWindow* window) {
-	window->draw(m_sprite);
+	position.x += dx * elapsed_time;
+	CheckCollisionsWithMap(solid,dx, 0 );
+	position.y += dy * elapsed_time;
+	CheckCollisionsWithMap(solid, 0, dy);
+	sprite.setPosition(position.x, position.y);
 }
 
-/*void Mob::interaction_with_map(Map* map) {
-	int height = map->get_size().x;
-	int weight = map->get_size().y;
-	float x0 = map->get_coor().x;
-	float y0 = map->get_coor().y;
-	for(int i Map.)
 
-}*/
+

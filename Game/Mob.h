@@ -1,7 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include "Basic.h"
-#include "Map.h"
+#include "object.h"
+
 
 using namespace sf;
 typedef enum
@@ -12,38 +12,40 @@ typedef enum
 	RIGHT,
 	STOP
 }m_state;
-class Mob:public updatable, public drawable{
+class Mob: public Object, public updatable, public drawable{
 private:
-	// Позиция моба и его физические размеры в расчете от центра
-	Vector2f m_position;
-	Vector2f m_size;
 	
-	//Картинка для моба
-	Image m_image;
-	Sprite m_sprite;
-	Texture m_texture;
+	
 
-	//Характеристики скорости, здоровья и наспраления движения
+	//Характеристики скорости, здоровья и направления движения
 	float m_speed;
 	float m_health;
+protected:
 	m_state m_dir;
+	//Спрайт игрока
+	sf::Image image;
+	sf::Texture texture;
+	sf::Sprite sprite;
 
 public:
 	//Конструктор
 	Mob();
-	//Назначить позицию по карте 
-	void Set_position(Vector2f position);
+	//Здесь по факту w и h задаются framerect,но для каноничноти я их не убрал, поэтому смотрите что в конструкторах задаёте одинаково
+	Mob(float left, float top, float w, float h, std::string o_name, std::string o_type, std::string sprite_src, sf::IntRect frameRect);
+	Mob(sf::Vector2f pos, sf::Vector2f size, std::string o_name, std::string o_type, std::string sprite_src, sf::IntRect frameRect);
+	
+	//setter для показателей
+	void SetSprite(std::string src, sf::IntRect frameRect);
+	void SetSpeed(float speed);
+	void SetLife(float health);
+	void SetDiraction(m_state dir);
+	void SetMobParams(float  speed, float health);
 
-	void Set_texture(sf::String way,IntRect rect);
+	//Рисование и обновление позиций игрока
+	void draw(sf::RenderWindow* window);
+	void update(std::vector<Object*>& solid, float elapsed_time);
 
-	Vector2f Get_coordinate();
-	//Задать напрвления движения
-	void move(m_state direction);
-	//Подвинуть моба по новым координатам
-	void update(float elapsed_time);
-	//Отрисовать моба
-	void draw(RenderWindow* window);
-
-	void interaction_with_map(Map* map);
+	//optimize it Нужно для проверки столкновения моба с картой
+	void CheckCollisionsWithMap(std::vector<Object*>& solid, float Dx, float Dy);
 	
 };

@@ -1,7 +1,6 @@
 #pragma once
-#include <SFML/Graphics.hpp>
-#include "Mob.h";
-#include "Map.h"
+
+#include "Mission.h"
 
 using namespace sf;
 
@@ -17,10 +16,12 @@ private:
     Sprite background_sprite;
     Texture background_texture;
 
-    // Active player
+    //Показатель в миссии ли управление
+    bool isMission;
+
+    // Активная миссия
    
-    Mob* e_active;
-    Map* e_map;
+    Mission* mission;
 
     //Метод, регулирующий ввод и распределяющий их между активными элементами игры
     void input();
@@ -32,6 +33,7 @@ private:
 public:
     // Конструктор движка
     Engine();
-    // Функция старт вызовет все приватные функции
+    // Функция старт вызовет все приватные функции и задают первую миссию(но это пока)
     void start();
+    
 };

@@ -1,7 +1,7 @@
 #include "Map.h"
 #include <iostream>
 
-using namespace sf;
+
 
 Map::Map() {
 	//поставить assert на ошибку загрузки
@@ -10,62 +10,84 @@ Map::Map() {
 	t_map.loadFromImage(map_image);
 	s_map.setTexture(t_map);
 	
-	
-	map_dict = {};
-	
-	
 	//Параметры для рисовки Tile
-	Map_height = 0;
-	Map_width = 0;
-	Map_position = Vector2f(0, 0);
-	size_of_texture = 0;
-	Tile_Map = {};
+	Map_size = sf::Vector2f(1, 1);
+	Map_position = sf::Vector2f(0, 0);
+	
 	
 }
-void Map::Set_sprite (String way, std::map<char,IntRect>& dict,int size) {
-	
 
-	//поставить assert на ошибку загрузки
-	map_image.loadFromFile(way);//загружаем файл для карты
-	t_map.loadFromImage(map_image);//заряжаем текстуру картинкой
-	s_map.setTexture(t_map);//заливаем текстуру спрайтом
 
-	
-	map_dict.insert(dict.begin(), dict.end());
-	size_of_texture = size;
 
-}
-
-void Map::Set_tile(std::vector <String>& tile, int height, int width) {
-
-	Tile_Map = tile;
-	Map_height = height;
-	Map_width = width;
-
-}
 
 void  Map::draw(RenderWindow* window) {
-	
 
-	for (int i = 0; i < Map_height; i++)
-	{
-		for (int j = 0; j < Map_width; j++)
+	for (auto l : layers) {
+		sf::Sprite s;
+		sf::Texture t;
+		sf::Image i;
+		i.loadFromFile(l.src);
+		t.loadFromImage(i);
+		s.setTexture(t);
+		for (int i = 0; i < l.layer_size.x; i++)
 		{
-		
-			s_map.setTextureRect(map_dict[Tile_Map[i][j]]); 
-			s_map.setPosition(j * size_of_texture, i * size_of_texture);
-			//по сути раскидывает квадратики, превращая в карту. 
-			window->draw(s_map);
+			for (int j = 0; j < l.layer_size.y; j++)
+			{
+
+				s.setTextureRect(l.layer_dict[l.Tile_Layer[i][j]]);
+				s.setPosition(j * l.layer_size_of_texture.y, i * l.layer_size_of_texture.x);
+				//по сути раскидывает квадратики, превращая в карту. 
+				window->draw(s);
+			}
+
 		}
-
 	}
-	
+
 
 }
-
-Vector2f Map::get_size() {
-	return Vector2f(Map_height, Map_width);
+void Map::SetMapObjects(std::vector <Object*> objects) {
+	objs = objects;
 }
-Vector2f Map::get_coor() {
+void Map::SetMapLayers(std::vector <Layer> Layers, sf::Vector2f Map_siz, sf::Vector2f Map_pos) {
+	layers = Layers;
+	Map_size = Map_siz;
+	Map_position = Map_pos;
+
+}
+sf::Vector2f Map::GetSize() {
+	return Map_size;
+}
+sf::Vector2f Map::GetPos() {
 	return Map_position;
+}
+
+std::vector <Object*> Map::GetObjectsByName(std::string name) {
+	std::vector <Object*> vec;
+	for (auto o : objs) {
+		if (o->GetName() == name)
+			vec.push_back(o);
+	}
+	return vec;
+}
+Object* Map::GetObjectByName(std::string name) {
+	for (auto o : objs) {
+		if (o->GetName() == name)
+			return o;
+	}
+	return NULL;
+}
+std::vector <Object*> Map::GetObjectsByType(std::string type) {
+	std::vector <Object*> vec;
+	for (auto o : objs) {
+		if (o->GetType() == type)
+			vec.push_back(o);
+	}
+	return vec;
+}
+Object* Map::GetObjectByType(std::string type) {
+	for (auto o : objs) {
+		if (o->GetType() == type)
+			return o;
+	}
+	return NULL;
 }
