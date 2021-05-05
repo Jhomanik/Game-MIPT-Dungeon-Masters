@@ -14,9 +14,15 @@ protected:
 	//размер - ()
 	sf::Vector2f size;
 
+	sf::Image image;
+	sf::Texture texture;
+	sf::Sprite sprite;
+
 
 public:
 	//3 конструктора - дефолтный, с 4 float и 2 Vector -когда пишите задание координат с векторами, обязательно добавляйте перегрузки для float и vector
+	Object(float left, float top, float w, float h, std::string o_name, std::string o_type, std::string sprite_src, sf::IntRect frameRect);
+	Object(sf::Vector2f pos, sf::Vector2f size,  std::string o_name, std::string o_type, std::string sprite_src, sf::IntRect frameRect);
 	Object(float left, float top, float w, float h, std::string o_name, std::string o_type);
 	Object(sf::Vector2f pos, sf::Vector2f size, std::string o_name, std::string o_type);
 	Object();
@@ -33,6 +39,7 @@ public:
 	sf::Vector2f GetSize();
 	//Возвращает прямоугольник объекта
 	sf::FloatRect GetRect();
+	sf::Sprite GetSprite();
 	std::string GetType();
 	std::string GetName();
 

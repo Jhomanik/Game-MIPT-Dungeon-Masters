@@ -39,7 +39,15 @@ void Engine::start() {
 							 new Object(0,0,32*15,32,"wal","solid"),
 							 new Object(32*14,0,32,32*10,"wal","solid"),
 								new Object(7*32, 5*32, 3*32,32, "wal","solid")});
-	mission = new Mission(e_map, e_active);
+	std::vector <Enemy*> enemies = { new Enemy(sf::Vector2f(350,100), sf::Vector2f(32 + 12,28),"knight","enemy","images\\roguelikeitems.png",IntRect(32*5-10, 32 * 14 - 10, 32 + 12, 32)),
+									new Enemy(sf::Vector2f(100,200), sf::Vector2f(32 + 12,28),"knight","enemy","images\\roguelikeitems.png",IntRect(32*5-10, 32 * 14 - 10, 32 + 12, 32)),
+									new Enemy(sf::Vector2f(350,200), sf::Vector2f(32 + 12,28),"Tkach","enemy","images\\roguelikeitems.png",IntRect(0, 32 * 16 - 20, 32 + 12, 28)) }; //IntRect(0, 32 * 16 - 20, 32 + 12, 28)
+	enemies[2]->SetHealth(300);
+	
+	std::vector <MeleeWeapon*> m_weapons = { new MeleeWeapon(1500,100, 50, 20, sf::Vector2f(200,100), sf::Vector2f(32 + 14,32 + 10),"sword","m_weapon","images\\roguelikeitems.png",IntRect(0, 32 * 11-10, 32 + 14, 32+10)),
+											new MeleeWeapon(2500,100, 55, 100, sf::Vector2f(300,200), sf::Vector2f(32 + 14,32 + 10),"axe","m_weapon","images\\roguelikeitems.png",IntRect(32*6, 32 * 11 - 10, 32 + 14, 32 + 10)) };
+	enemies[1]->SetMeleeWeapon(m_weapons[1]);
+	mission = new Mission(e_map, e_active,enemies,m_weapons);
 	
 
 	//Главный цикл движка

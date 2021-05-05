@@ -1,15 +1,41 @@
 #include "Object.h"
+Object::Object(float left, float top, float w, float h, std::string o_name, std::string o_type, std::string sprite_src, sf::IntRect frameRect) {
+	position = sf::Vector2f(left, top);
+	size = sf::Vector2f(w, h);
+	name = o_name;
+	type = o_type;
+	image.loadFromFile(sprite_src);
+	texture.loadFromImage(image);
+	sprite.setTexture(texture);
+	sprite.setTextureRect(frameRect);
+	sprite.setPosition(position);
+}
 Object::Object(float left, float top, float w, float h, std::string o_name, std::string o_type) {
 	position = sf::Vector2f(left, top);
 	size = sf::Vector2f(w, h);
 	name = o_name;
 	type = o_type;
+	
+	sprite.setPosition(position);
 }
+Object::Object(sf::Vector2f pos, sf::Vector2f siz, std::string o_name, std::string o_type, std::string sprite_src, sf::IntRect frameRect) {
+	position = pos;
+	size = siz;
+	name = o_name;
+	type = o_type;
+	image.loadFromFile(sprite_src);
+	texture.loadFromImage(image);
+	sprite.setTexture(texture);
+	sprite.setTextureRect(frameRect);
+	sprite.setPosition(position);
+}
+
 Object::Object(sf::Vector2f pos, sf::Vector2f siz, std::string o_name, std::string o_type) {
 	position = pos;
 	size = siz;
 	name = o_name;
 	type = o_type;
+	sprite.setPosition(position);
 }
 Object::Object() {
 
@@ -49,6 +75,9 @@ sf::Vector2f Object::GetPos() {
 }
 sf::Vector2f Object::GetSize() {
 	return size;
+}
+sf::Sprite Object::GetSprite() {
+	return sprite;
 }
 sf::FloatRect Object::GetRect() {
 	return sf::FloatRect(position.x, position.y, size.x, size.y);
