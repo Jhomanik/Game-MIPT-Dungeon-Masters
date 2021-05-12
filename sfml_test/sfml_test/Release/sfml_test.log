@@ -1,7 +1,0 @@
-﻿  main.cpp
-c:\users\user\source\repos\sfml_test\sfml_test\main.cpp(7): warning C4244: аргумент: преобразование "unsigned int" в "float", возможна потеря данных
-  Menu.cpp
-  Создание кода
-  All 75 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
-  Создание кода завершено
-  sfml_test.vcxproj -> C:\Users\USER\source\repos\sfml_test\Release\sfml_test.exe
