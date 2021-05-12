@@ -16,15 +16,18 @@ void Player::input() {
 	if (Keyboard::isKeyPressed(Keyboard::F)) {
 		mweapon_state = TAKE;
 		is_pressed_mweapon = 1;
+		
 	}
 	if (Keyboard::isKeyPressed(Keyboard::Q)) {
 
 		mweapon_state = DROP;
 		is_pressed_mweapon = 1;
+	
 	}
 	if (Keyboard::isKeyPressed(Keyboard::E)) {
 		mweapon_state = SWAP;
 		is_pressed_mweapon = 1;
+	
 	}
 	if (!is_pressed_mweapon) {
 		mweapon_state = NOTHING;

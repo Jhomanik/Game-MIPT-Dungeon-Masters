@@ -26,7 +26,7 @@ private:
 
 protected:
 	//Характеристики скорости, здоровья и направления движения
-	float m_speed;
+	float m_speed = 0.4;
 	float m_health;
 	m_dir_state m_dir;
 	m_mweapon_state mweapon_state = NOTHING;

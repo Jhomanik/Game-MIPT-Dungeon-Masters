@@ -26,9 +26,11 @@ public:
 		{
 		case SWAP:
 			SwapMeleeWeapon();
+			mweapon_state = NOTHING;
 			break;
 		case DROP:
 			DropMeleeWeapon();
+			mweapon_state = NOTHING;
 			break;
 		case TAKE:
 		{
@@ -40,6 +42,7 @@ public:
 				SetMeleeWeapon(w);
 				
 			}
+			mweapon_state = NOTHING;
 		}
 			break;
 
@@ -56,15 +59,20 @@ public:
 		{
 		case UP:
 			dy = -m_speed * elapsed_time;
+			
 			break;
 		case DOWN:
 			dy = m_speed * elapsed_time;
+			
 			break;
 		case LEFT:
 			dx = -m_speed * elapsed_time;
+			
 			break;
 		case RIGHT:
 			dx = m_speed * elapsed_time;
+			
+			
 			break;
 		default:
 

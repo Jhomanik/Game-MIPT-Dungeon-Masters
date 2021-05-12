@@ -9,7 +9,8 @@ Engine::Engine() {
 	background_texture.loadFromImage(background_image);
 	background_sprite.setTexture(background_texture);
 	mission = NULL;
-	isMission = false;
+	is_mission = false;
+	main_menu = NULL;
 }
 
 
@@ -17,7 +18,19 @@ Engine::Engine() {
 void Engine::start() {
 	Clock clock;
 
+	//Меню 
+	std::vector <Button*> main_menu_buttons = { new Button("Fonts\\CyrilicOld.TTF", "Play mission"),
+									new Button("Fonts\\CyrilicOld.TTF", "Exit to Desktop") };
+	main_menu = new MainMenu (e_Window.getSize().x, e_Window.getSize().y, main_menu_buttons);
+	std::string title = std::string("MIPT DUNGEON MASTERS");
+	main_menu->SetTitle(title);
 
+
+	std::vector <Button*> mission_menu_buttons = { new Button("Fonts\\CyrilicOld.TTF", "Continue mission"),
+									new Button("Fonts\\CyrilicOld.TTF", "Exit to main menu") };
+	MissionMenu* mission_menu = new MissionMenu(e_Window.getSize().x, e_Window.getSize().y, mission_menu_buttons);
+	std::string src = std::string("images\\mission_menu_background.jpg");
+	mission_menu->SetSprite(src);
 	//Задание миссии
 	Player* e_active = new Player(sf::Vector2f(100, 100),sf::Vector2f(32+12,32), "Player", "Mob", "images\\roguelikeitems.png", IntRect(0, 32 * 14 - 10, 32 + 12, 32));
 	
@@ -47,7 +60,7 @@ void Engine::start() {
 	std::vector <MeleeWeapon*> m_weapons = { new MeleeWeapon(1500,100, 50, 20, sf::Vector2f(200,100), sf::Vector2f(32 + 14,32 + 10),"sword","m_weapon","images\\roguelikeitems.png",IntRect(0, 32 * 11-10, 32 + 14, 32+10)),
 											new MeleeWeapon(2500,100, 55, 100, sf::Vector2f(300,200), sf::Vector2f(32 + 14,32 + 10),"axe","m_weapon","images\\roguelikeitems.png",IntRect(32*6, 32 * 11 - 10, 32 + 14, 32 + 10)) };
 	enemies[1]->SetMeleeWeapon(m_weapons[1]);
-	mission = new Mission(e_map, e_active,enemies,m_weapons);
+	mission = new Mission(e_map, e_active,enemies,m_weapons,mission_menu);
 	
 
 	//Главный цикл движка
@@ -55,7 +68,7 @@ void Engine::start() {
 
 		float time_mcsec = clock.getElapsedTime().asMicroseconds();
 		clock.restart();
-		time_mcsec = time_mcsec / 1000;
+		time_mcsec = time_mcsec/1000;
 		input();
 		update(time_mcsec);
 		draw();

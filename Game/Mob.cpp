@@ -11,7 +11,7 @@ Mob::Mob():Object(){
 
 
 	m_health = 100.;
-	m_speed = 0.5;
+	
 	m_dir = STOP;
 
 	is_life = true;
@@ -25,7 +25,7 @@ Mob::Mob():Object(){
 
 Mob::Mob(float left, float top, float w, float h, std::string o_name, std::string o_type, std::string sprite_src, sf::IntRect frameRect):Object(left,top,w,h,o_name,o_type, sprite_src, frameRect) {
 	m_health = 100;
-	m_speed = 0.5;
+
 	m_dir = STOP;
 	hands = new MeleeWeapon;
 	m_weapon = nullptr;
@@ -42,7 +42,7 @@ Mob::Mob(float left, float top, float w, float h, std::string o_name, std::strin
 
 Mob::Mob(sf::Vector2f pos, sf::Vector2f size, std::string o_name, std::string o_type, std::string sprite_src, sf::IntRect frameRect) :Object(pos,size, o_name, o_type, sprite_src, frameRect) {
 	m_health = 100;
-	m_speed = 0.5;
+
 	m_dir = STOP;
 	is_life = true;
 	hands = new MeleeWeapon;

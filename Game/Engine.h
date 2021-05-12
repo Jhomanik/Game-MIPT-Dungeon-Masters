@@ -2,6 +2,7 @@
 
 #include "Mission.h"
 
+
 using namespace sf;
 
 class Engine
@@ -15,9 +16,13 @@ private:
     Image background_image;
     Sprite background_sprite;
     Texture background_texture;
-
+    float input_timer = 0;
+    float input_time = 110;
     //Показатель в миссии ли управление
-    bool isMission;
+    bool is_mission;
+    bool is_over = false;
+
+    MainMenu* main_menu;
 
     // Активная миссия
    
@@ -26,7 +31,7 @@ private:
     //Метод, регулирующий ввод и распределяющий их между активными элементами игры
     void input();
     //Метод, запускающий обновление всех обновляемых активных элементов игры 
-    void update(float time_mcs);
+    void update(float elapsed_time);
     //Метод, рисующий все элементы
     void draw();
 
