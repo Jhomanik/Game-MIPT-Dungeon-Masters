@@ -33,6 +33,7 @@ private:
 public:
 	//Конструктор
 	Map(); 
+	Map* copy();
 
 	void SetMapLayers(std::vector <Layer> layers, sf::Vector2f Map_siz, sf::Vector2f Map_pos );
 	void SetMapObjects(std::vector <Object*> objects);

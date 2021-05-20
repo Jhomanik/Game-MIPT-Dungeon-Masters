@@ -14,10 +14,12 @@ protected:
 	sf::Color current_color = unselected_color;
 	sf::Vector2f position;
 	sf::Vector2f scale;
+	std::string f_src;
+	std::string t_src;
 	button_state state = UNSELECTED;
 	sf::Color selected_color = sf::Color::Red;
 	sf::Color unselected_color = sf::Color::White;
-	sf::Color pressed_color = sf::Color::Red;
+	sf::Color pressed_color = sf::Color::Green;
 public:
 
 	Button(std::string font_src, std::string text) {
@@ -25,9 +27,18 @@ public:
 		{
 			std::cout << "error font" << std::endl;
 		}
+		f_src = font_src;
+		t_src = text;
 		button_text.setFont(font);
 		button_text.setString(text);
 	}
+	void MarkButton(bool is_done) {
+		if(is_done)
+			button_text.setStyle(sf::Text::Underlined);
+		else
+			button_text.setStyle(sf::Text::Bold);
+	}
+	
 	void set_params(sf::Vector2f pos, sf::Vector2f sc) {
 		position = pos;
 		scale = sc;
@@ -59,6 +70,11 @@ public:
 	sf::Vector2f GetScale() {
 		return scale;
 	}
+	void SetUnselelectedColor(sf::Color c) {
+		unselected_color = c;
+
+	}
+	
 	void update(bool& is_menu) {
 		switch (state)
 		{
@@ -77,12 +93,14 @@ public:
 			state = UNSELECTED;
 			break;
 		}
-		
+
 		default:
 			break;
 		}
 	}
+	Button* copy() {
+		Button* b = new Button(t_src, f_src);
+		return b;
+	}
+
 };
-
-
-

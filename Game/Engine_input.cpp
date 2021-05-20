@@ -10,8 +10,14 @@ void Engine::input() {
                 if (is_mission) {
                     mission->input();
                 }
-                else {
-                    main_menu->input();
+                else
+                {
+                    if (is_choice_menu) {
+                        choice_menu->input();
+                    }
+                    else {
+                        main_menu->input();
+                    }
                 }
             }
             if(input_timer == 0.)

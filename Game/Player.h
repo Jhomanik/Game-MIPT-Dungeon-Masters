@@ -16,6 +16,9 @@ public:
 	Player();
 	Player(float left, float top, float w, float h, std::string o_name, std::string o_type, std::string sprite_src, sf::IntRect frameRect);
 	Player(sf::Vector2f pos, sf::Vector2f size, std::string o_name, std::string o_type, std::string sprite_src, sf::IntRect frameRect);
+
+	Player* copy();
+
 	template <class T>
 	void update(std::vector <Object*>& solid, std::vector <T*>& enemies,std::vector<MeleeWeapon*> m_weapons, float elapsed_time) {
 		//»зменение направлени€ в зависимости от движени€ 

@@ -22,7 +22,12 @@ MeleeWeapon::MeleeWeapon(float cool_time, float a_time, float a_rad, float a_dam
 	bool is_pressed_attack = false;
 	p_attack_state p_attack = READY;
 }
-
+MeleeWeapon* MeleeWeapon::copy() {
+	MeleeWeapon* pointer = new MeleeWeapon(cooldown_time, attack_time, attack_rad, attack_damage, position, size, name, type, spr_source, frame_rect);
+	pointer->is_with_mob = is_with_mob;
+	pointer->is_hands = is_hands;
+	return pointer;
+}
 
 void MeleeWeapon::SetMeleeWeapon(float cool_time, float a_time, float a_rad, float a_damage) {
 	attack_time = a_time;

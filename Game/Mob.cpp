@@ -22,7 +22,6 @@ Mob::Mob():Object(){
 	sprite.setTexture(texture);
 	sprite.setPosition(position);
 }
-
 Mob::Mob(float left, float top, float w, float h, std::string o_name, std::string o_type, std::string sprite_src, sf::IntRect frameRect):Object(left,top,w,h,o_name,o_type, sprite_src, frameRect) {
 	m_health = 100;
 
@@ -68,6 +67,8 @@ void Mob::SetSprite(std::string src, sf::IntRect frameRect) {
 	sprite.setTexture(texture);
 	sprite.setTextureRect(frameRect);
 	size = sf::Vector2f(frameRect.height, frameRect.width);
+	spr_source = src;
+	frame_rect = frameRect;
 }
 
 void Mob::SetSpeed(float speed) {
@@ -165,25 +166,33 @@ void Mob::draw(sf::RenderWindow* window) {
 	font.loadFromFile("fonts\\CyrilicOld.ttf");//передаем нашему шрифту файл шрифта
 	Text text("", font, 20);
 	text.setFillColor(sf::Color::Red);
-	std::string str = name + "\nhp:" +std::to_string(int(m_health)) + "\n";
-	switch (active_melee_weapon->GetState())
+	std::string str = "hp: " +  std::to_string(int(m_health)) + "\n";
+	if (name == "Player")
 	{
-	case ATTACK:
-		str += "attack";
-		break;
-	case COOLDOWN:
-		str += "cd: " + std::to_string(int(active_melee_weapon->GetCooldown() / 100));
-		break;
-	case READY:
-		str += "ready";
-		break;
-	default:
+		switch (active_melee_weapon->GetState())
+		{
+		case ATTACK:
+			str += "attack";
+			break;
+		case COOLDOWN:
+			str += "cd: " + std::to_string(int(active_melee_weapon->GetCooldown() / 100));
+			break;
+		case READY:
+			str += "ready";
+			break;
+		default:
 
-		break;
+			break;
+		}
+		text.setPosition(position - sf::Vector2f(0, 40));
+		text.setFillColor(sf::Color::Green);
+	}
+	else {
+		text.setPosition(position - sf::Vector2f(0, 25));
 	}
 	text.setString(str);
 	text.setStyle(sf::Text::Bold);
-	text.setPosition(position-sf::Vector2f(0,50));
+	
 	window->draw(text);
 }
 sf::RectangleShape Mob::GetAttackShape() {
@@ -219,7 +228,8 @@ void Mob::SetMeleeWeapon(MeleeWeapon* melee_weapon) {
 	melee_weapon->ConnectWithMob();
 }
 void Mob::DropMeleeWeapon() {
-	if (active_melee_weapon != hands) {
+	if (active_melee_weapon != hands) 
+	{
 		active_melee_weapon = hands;
 		m_weapon->DisconnectWithMob();
 		m_weapon = nullptr;
@@ -230,5 +240,8 @@ void Mob::Kill() {
 	if (m_weapon != nullptr) {
 		m_weapon->DisconnectWithMob();
 	}
+}
+MeleeWeapon* Mob::GetMW() {
+	return m_weapon;
 }
 

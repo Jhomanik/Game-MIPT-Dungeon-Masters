@@ -7,17 +7,22 @@
 class Mission: public drawable,public updatable
 {
 public:
-	Mission();
-	Mission(Map* map, Player* p, std::vector <Enemy*>& enemies_vec, std::vector <MeleeWeapon*>& m_weapons, MissionMenu* menu);
+	
+	Mission(Map* map, Player* p, std::vector <Enemy*>& enemies_vec, std::vector <MeleeWeapon*>& m_weapons, MissionMenu* menu, std::string name);
 	
 	bool is_menu = false;
+	bool is_done;
 	void draw(sf::RenderWindow& window);
-	void update(float elapsed_time, bool& is_mission);
+	void update(float elapsed_time, bool& is_mission, bool& is_restart);
 	void input();
+	Mission* save();
+	std::string GetName();
+	bool GetProgress();
 
 private:
 	
-
+	int enemy_count;
+	std::string mission_name;
 	std::vector <Object*> solid;
 	std::vector <Enemy*> enemies;
 	std::vector <MeleeWeapon*> Melee_weapons;

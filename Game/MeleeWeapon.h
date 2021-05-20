@@ -19,7 +19,7 @@ private:
 	float cooldown_timer = 0;
 	float attack_timer = 0;
 	float attack_rad = 30;
-	float attack_damage = 10;
+	float attack_damage = 1000;
 	sf::FloatRect attack_rect;
 
 	//У игрока
@@ -35,7 +35,7 @@ public:
 	MeleeWeapon(float cool_time, float a_time, float a_rad, float a_damage, sf::Vector2f pos, sf::Vector2f size, std::string o_name, std::string o_type, std::string sprite_src, sf::IntRect frameRect);
 	
 	void input();
-	
+	MeleeWeapon* copy();
 	void draw(sf::RenderWindow* window);
 	void SetMeleeWeapon(float cool_time, float a_time, float a_rad, float a_damage);
 

@@ -13,7 +13,8 @@ protected:
 	sf::Vector2f position;
 	//размер - ()
 	sf::Vector2f size;
-
+	std::string spr_source;
+	sf::IntRect frame_rect;
 	sf::Image image;
 	sf::Texture texture;
 	sf::Sprite sprite;
@@ -25,6 +26,7 @@ public:
 	Object(sf::Vector2f pos, sf::Vector2f size,  std::string o_name, std::string o_type, std::string sprite_src, sf::IntRect frameRect);
 	Object(float left, float top, float w, float h, std::string o_name, std::string o_type);
 	Object(sf::Vector2f pos, sf::Vector2f size, std::string o_name, std::string o_type);
+	Object(const Object& obj);
 	Object();
 	
 	//setter и getter для различных полей

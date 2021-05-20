@@ -62,7 +62,16 @@ void Player::input() {
 }
 
 
-
+Player* Player::copy() {
+	Player* e = new Player(position, size, name, type, spr_source, frame_rect);
+	e->SetHealth(m_health);
+	if (m_weapon != nullptr)
+	{
+		MeleeWeapon* weapon = m_weapon->copy();
+		e->SetMeleeWeapon(weapon);
+	}
+	return e;
+}
 
 
 

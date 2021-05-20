@@ -8,3 +8,13 @@ Enemy::Enemy(sf::Vector2f pos, sf::Vector2f size, std::string o_name, std::strin
 
 }
 
+Enemy* Enemy::copy() {
+	Enemy* e = new Enemy(position, size, name, type, spr_source, frame_rect);
+	e->SetHealth(m_health);
+	if (m_weapon != nullptr)
+	{
+		MeleeWeapon* weapon = m_weapon->copy();
+		e->SetMeleeWeapon(weapon);
+	}
+	return e;
+}

@@ -7,6 +7,8 @@ public:
 	Enemy();
 	Enemy(float left, float top, float w, float h, std::string o_name, std::string o_type, std::string sprite_src, sf::IntRect frameRect);
 	Enemy(sf::Vector2f pos, sf::Vector2f size, std::string o_name, std::string o_type, std::string sprite_src, sf::IntRect frameRect);
+
+	Enemy* copy();
 	template <class T>
 	void update(std::vector<Object*>& solid, std::vector <T*> players, float elapsed_time) {
 		active_melee_weapon->update(elapsed_time,this);

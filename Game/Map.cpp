@@ -17,7 +17,12 @@ Map::Map() {
 	
 }
 
-
+Map* Map::copy() {
+	Map* m = new Map();
+	m->SetMapLayers(layers, Map_size, Map_position);
+	m->SetMapObjects(objs);
+	return m;
+}
 
 
 void  Map::draw(RenderWindow* window) {

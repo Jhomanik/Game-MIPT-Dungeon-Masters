@@ -23,6 +23,8 @@ Object::Object(sf::Vector2f pos, sf::Vector2f siz, std::string o_name, std::stri
 	size = siz;
 	name = o_name;
 	type = o_type;
+	spr_source = sprite_src;
+	frame_rect = frameRect;
 	image.loadFromFile(sprite_src);
 	texture.loadFromImage(image);
 	sprite.setTexture(texture);
@@ -42,6 +44,15 @@ Object::Object() {
 	position = sf::Vector2f(0, 0);
 	size = sf::Vector2f(1, 1);
 
+}
+
+Object::Object(const Object& obj) {
+	size = obj.size;
+	image = obj.image;
+	position = obj.position;
+	texture = obj.texture;
+	name = obj.name;
+	type = obj.type;
 }
 
 void Object::SetObject(sf::Vector2f pos, sf::Vector2f size, std::string o_name, std::string o_type) {

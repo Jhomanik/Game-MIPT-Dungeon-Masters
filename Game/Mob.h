@@ -35,6 +35,7 @@ protected:
 	float recoil_timer = 0;
 	sf::Vector2f recoil_dir;
 	float immortal_timer = 0;
+
 	sf::Sprite glove;
 	sf::Image glove_image;
 	sf::Texture glove_texture;
@@ -56,6 +57,7 @@ public:
 	//Здесь по факту w и h задаются framerect,но для каноничноти я их не убрал, поэтому смотрите что в конструкторах задаёте одинаково
 	Mob(float left, float top, float w, float h, std::string o_name, std::string o_type, std::string sprite_src, sf::IntRect frameRect);
 	Mob(sf::Vector2f pos, sf::Vector2f size, std::string o_name, std::string o_type, std::string sprite_src, sf::IntRect frameRect);
+	Mob(const Mob& m);
 	
 	//setter для показателей
 	void SetSprite(std::string src, sf::IntRect frameRect);
@@ -71,6 +73,7 @@ public:
 	void TakeDamage(float damage, sf::Vector2f damage_dir, float attack_duration);
 	void SwapMeleeWeapon();
 	void DropMeleeWeapon();
+	MeleeWeapon* GetMW();
 	bool GetIsLife();
 	//Рисование и обновление позиций игрока
 	void draw(sf::RenderWindow* window);

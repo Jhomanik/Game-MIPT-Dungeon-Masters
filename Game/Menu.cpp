@@ -83,6 +83,7 @@ void Menu::input() {
 }
 
 void Menu::SetSprite(std::string& src) {
+	src_image = src;
 	if (!texture.loadFromFile(src)) {											//Çàäàåì çàäíèé ôîí
 		std::cout << "error texture" << std::endl;
 	}
@@ -90,8 +91,11 @@ void Menu::SetSprite(std::string& src) {
 
 }
 void Menu::SetTitle(std::string& title_src) {
+	title_source = title_src;
 	title.setFont(font);
 	title.setString(title_src);
+
+
 	title.setPosition(sf::Vector2f(menu_width / 2 - title.getGlobalBounds().width/2*3,20));
 	title.setScale(3, 2.5);
 	title.setFillColor(sf::Color::White);
