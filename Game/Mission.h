@@ -12,6 +12,7 @@ public:
 	
 	bool is_menu = false;
 	bool is_done;
+	bool show_inst = true;
 	void draw(sf::RenderWindow& window);
 	void update(float elapsed_time, bool& is_mission, bool& is_restart);
 	void input();

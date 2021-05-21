@@ -9,9 +9,7 @@ Mob::Mob():Object(){
 	glove.scale(0.5, 0.5);
 	
 
-
-	m_health = 100.;
-	
+	m_health = 100.;	
 	m_dir = STOP;
 
 	is_life = true;
@@ -198,13 +196,13 @@ void Mob::draw(sf::RenderWindow* window) {
 sf::RectangleShape Mob::GetAttackShape() {
 	if (active_melee_weapon->GetState() == ATTACK)
 	{
-		sf::RectangleShape rect = sf::RectangleShape(sf::Vector2f(attack_rect.width, attack_rect.width));
-		rect.setPosition(sf::Vector2f(attack_rect.left, attack_rect.top));
+		sf::RectangleShape rect = sf::RectangleShape(sf::Vector2f(2*active_melee_weapon->GetRad(), 2*active_melee_weapon->GetRad()));
+		rect.setPosition(sf::Vector2f(position.x + size.x / 2 - active_melee_weapon->GetRad(), position.y + size.y / 2 - active_melee_weapon->GetRad()));
 		rect.setFillColor(Color::Red);
 		return rect;
 	}
 	else
-		return sf::RectangleShape();
+		return sf::RectangleShape(sf::Vector2f(0,0));
 	
 }
 void Mob::SwapMeleeWeapon() {

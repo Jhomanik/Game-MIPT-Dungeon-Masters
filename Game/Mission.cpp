@@ -28,8 +28,13 @@ Mission* Mission::save() {
 	}
 	for (auto e : ens) {
 		if (e->GetMW() != nullptr) {
-			weapons.push_back((e->GetMW())->copy());
+			MeleeWeapon* w = e->GetMW()->copy();
+			e->SetMeleeWeapon(w);
+
+			weapons.push_back(w);
+
 		}
+		
 	}
 	return new Mission(map, p, ens, weapons, menu, mission_name);
 }
@@ -37,10 +42,11 @@ std::string Mission::GetName() {
 	return mission_name;
 }
 void Mission::draw(sf::RenderWindow& window) {
-	window.clear(sf::Color(0,0,0,255));
+
 	if (!is_menu)
 	{
 		mission_map->draw(&window);
+		
 		window.draw(mission_player->GetAttackShape());
 		for (auto enemy : enemies) {
 
@@ -58,8 +64,7 @@ void Mission::draw(sf::RenderWindow& window) {
 		Text task("", font, 80);
 		task.setFillColor(sf::Color::Red);
 		task.setStyle(sf::Text::Bold);
-		task.setPosition(VideoMode::getDesktopMode().width / 2 - task.getGlobalBounds().width/2, VideoMode::getDesktopMode().height / 2);
-
+		
 		if (!is_done) {
 			
 			task.setString("Enemies left :" + std::to_string(enemy_count));
@@ -68,15 +73,36 @@ void Mission::draw(sf::RenderWindow& window) {
 		else {
 			task.setString("Completed\n");
 		}
+
+		task.setPosition(VideoMode::getDesktopMode().width - task.getGlobalBounds().width - 50, VideoMode::getDesktopMode().height - task.getGlobalBounds().height - 50);
 		window.draw(task);
 
 		//Инструкция для ламеров
-
+		
 		Text inst("", font, 45);
-		inst.setFillColor(sf::Color::Yellow);
-		inst.setString("Move - W,A,S,D\n Pick up - F \n Attack - G ,LMB \n Swap weapon - E \n Drop - Q");
+		inst.setFillColor(sf::Color::Black);
+		sf::Texture list_texture;
+		list_texture.loadFromFile("images\\list.png");
+		sf::Sprite list_sprite;
+		list_sprite.setTexture(list_texture);
+	
 		inst.setStyle(sf::Text::Bold);
-		inst.setPosition(VideoMode::getDesktopMode().width / 2, 100);
+		inst.setScale(0.8, 1.2);
+		std::string s;
+		float delta;
+		if (show_inst)
+		{
+			s = "\t  Hide";
+			delta = 320;
+		}
+		else{
+			s = "\t  Show";
+			delta = 60;
+		}
+		list_sprite.setPosition(0, VideoMode::getDesktopMode().height - 75 -delta);
+		inst.setString(s + "- I \n Move - W,A,S,D\n Pick up - F \n Attack - G ,LMB \n Swap weapon - E \n Drop - Q");
+		inst.setPosition(90, VideoMode::getDesktopMode().height - delta);
+		window.draw(list_sprite);
 		window.draw(inst);
 	}
 	else
@@ -84,7 +110,6 @@ void Mission::draw(sf::RenderWindow& window) {
 		mission_menu->draw(window);
 	}
 
-	window.display();
 
 	// Отображаем все, что нарисовали
 	
@@ -136,7 +161,11 @@ void Mission::input() {
 	}
 	else {
 		if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+		{
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::I))
+				show_inst = (show_inst) ? false : true;
 			mission_player->input();
+		}
 		else
 			is_menu = true;
 	}

@@ -53,9 +53,6 @@ public:
 			break;
 		}
 		
-
-		
-
 		attack(enemies);
 		float dx = 0, dy = 0;
 		switch (m_dir)

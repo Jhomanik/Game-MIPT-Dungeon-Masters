@@ -15,7 +15,7 @@ private:
 	bool is_pressed_attack = false;
 	p_attack_state p_attack = READY;
 	float cooldown_time = 1000; 
-	float attack_time = 100;
+	float attack_time = 10;
 	float cooldown_timer = 0;
 	float attack_timer = 0;
 	float attack_rad = 30;
@@ -37,6 +37,7 @@ public:
 	void input();
 	MeleeWeapon* copy();
 	void draw(sf::RenderWindow* window);
+	void SetAttackTimer(float time);
 	void SetMeleeWeapon(float cool_time, float a_time, float a_rad, float a_damage);
 
 	p_attack_state GetState();

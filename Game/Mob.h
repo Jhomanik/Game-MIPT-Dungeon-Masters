@@ -90,7 +90,7 @@ public:
 		if (active_melee_weapon->GetState() == ATTACK) {
 			float attack_rad = active_melee_weapon->GetRad();
 			float attack_damage = active_melee_weapon->GetDamage();
-
+			
 			attack_rect = sf::FloatRect(position.x + size.x / 2 - attack_rad, position.y + size.y / 2 - attack_rad, 2 * attack_rad, 2 * attack_rad);
 			for (auto enemy : enemies) {
 				if (attack_rect.intersects(enemy->GetRect())) {

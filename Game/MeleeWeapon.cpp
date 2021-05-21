@@ -77,6 +77,10 @@ float MeleeWeapon::GetCooldown() {
 	return cooldown_timer;
 }
 
+void MeleeWeapon::SetAttackTimer(float time) {
+	this->attack_timer = time;
+}
+
 void MeleeWeapon::draw(sf::RenderWindow* window) {
 	
 	window->draw(sprite);
