@@ -1,26 +1,14 @@
 #include "Object.h"
 
-typedef enum
-{
-	UP,
-	DOWN,
-	LEFT,
-	RIGHT,
-	STOP
-}m_dir_state;
+
 
 class Bullet : public Object
 {
 private:
 
 protected:
-	float bul_speed = 0.8;
-	m_dir_state bul_dir;
-	int sprite_width = 64;
-	int sprite_height = 64;
-	float default_pos_x = 5000;
-	float default_pos_y = 5000;
-	float damage = 49.5;
+	float bul_speed = 0.1000;
+	sf::Vector2f dir = sf::Vector2f(0, 0);
 
 
 public:
@@ -43,7 +31,7 @@ public:
 	void CheckCollisionsWithMap(std::vector<Object*>& solid, float Dx, float Dy);
 	void CheckCollisionsWithMob(std::vector<Object*>& solid, float Dx, float Dy);
 
-
+/*
 	template <class T>
 	void  attack(std::vector <T*>& enemies) {
 		if (active_melee_weapon->GetState()) {
@@ -56,9 +44,9 @@ public:
 					enemy->TakeDamage(attack_damage, position + sf::Vector2f(size.x / 2, size.y / 2), attack_damage / 10 * 100);
 				}
 				else {
-					delete Bullet
+					delete Bullet;
 				}
 			}
 		}
-	}
+	}*/
 };
