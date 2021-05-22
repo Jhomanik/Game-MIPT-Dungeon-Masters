@@ -36,6 +36,8 @@ public:
 	void SetSize(sf::Vector2f s);
 	void SetType(std::string o_type);
 	void SetName(std::string o_name);
+	void SetSprite(std::string src, sf::IntRect frameRect);
+
 
 	sf::Vector2f GetPos();
 	sf::Vector2f GetSize();

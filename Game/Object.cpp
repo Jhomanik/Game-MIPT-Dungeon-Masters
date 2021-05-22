@@ -100,3 +100,12 @@ std::string Object::GetType() {
 std::string Object::GetName() {
 	return name;
 }
+void Object::SetSprite(std::string src, sf::IntRect frameRect) {
+	image.loadFromFile(src);
+	texture.loadFromImage(image);
+	sprite.setTexture(texture);
+	sprite.setTextureRect(frameRect);
+	size = sf::Vector2f(frameRect.height, frameRect.width);
+	spr_source = src;
+	frame_rect = frameRect;
+}

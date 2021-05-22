@@ -58,17 +58,6 @@ Mob::Mob(sf::Vector2f pos, sf::Vector2f size, std::string o_name, std::string o_
 
 
 
-
-void Mob::SetSprite(std::string src, sf::IntRect frameRect) {
-	image.loadFromFile(src);
-	texture.loadFromImage(image);
-	sprite.setTexture(texture);
-	sprite.setTextureRect(frameRect);
-	size = sf::Vector2f(frameRect.height, frameRect.width);
-	spr_source = src;
-	frame_rect = frameRect;
-}
-
 void Mob::SetSpeed(float speed) {
 	m_speed = speed;
 }
@@ -152,46 +141,52 @@ void Mob::CheckCollisionsWithMap(std::vector<Object*>&solid, float Dx, float Dy)
 }
 
 void Mob::draw(sf::RenderWindow* window) {
-	if (m_weapon != nullptr and active_melee_weapon != m_weapon) {
-		m_weapon->draw(window);
-	}
-	window->draw(sprite);
-	active_melee_weapon->draw(window);
-	glove.setPosition(position + sf::Vector2f(size.x/2+10,size.y/2));
-	window->draw(glove);
-
-	Font font;//רנטפע 
-	font.loadFromFile("fonts\\CyrilicOld.ttf");//ןונוהאול םארולף רנטפעף פאיכ רנטפעא
-	Text text("", font, 20);
-	text.setFillColor(sf::Color::Red);
-	std::string str = "hp: " +  std::to_string(int(m_health)) + "\n";
-	if (name == "Player")
+	if (is_life)
 	{
-		switch (active_melee_weapon->GetState())
-		{
-		case ATTACK:
-			str += "attack";
-			break;
-		case COOLDOWN:
-			str += "cd: " + std::to_string(int(active_melee_weapon->GetCooldown() / 100));
-			break;
-		case READY:
-			str += "ready";
-			break;
-		default:
-
-			break;
+		if (m_weapon != nullptr and active_melee_weapon != m_weapon) {
+			m_weapon->draw(window);
 		}
-		text.setPosition(position - sf::Vector2f(0, 40));
-		text.setFillColor(sf::Color::Green);
+		window->draw(sprite);
+		active_melee_weapon->draw(window);
+		glove.setPosition(position + sf::Vector2f(size.x / 2 + 10, size.y / 2));
+		window->draw(glove);
+
+		Font font;//רנטפע 
+		font.loadFromFile("fonts\\CyrilicOld.ttf");//ןונוהאול םארולף רנטפעף פאיכ רנטפעא
+		Text text("", font, 20);
+		text.setFillColor(sf::Color::Red);
+		std::string str = "hp: " + std::to_string(int(m_health)) + "\n";
+		if (name == "Player")
+		{
+			switch (active_melee_weapon->GetState())
+			{
+			case ATTACK:
+				str += "attack";
+				break;
+			case COOLDOWN:
+				str += "cd: " + std::to_string(int(active_melee_weapon->GetCooldown() / 100));
+				break;
+			case READY:
+				str += "ready";
+				break;
+			default:
+
+				break;
+			}
+			text.setPosition(position - sf::Vector2f(0, 40));
+			text.setFillColor(sf::Color::Green);
+		}
+		else {
+			text.setPosition(position - sf::Vector2f(0, 25));
+		}
+		text.setString(str);
+		text.setStyle(sf::Text::Bold);
+
+		window->draw(text);
 	}
 	else {
-		text.setPosition(position - sf::Vector2f(0, 25));
+		SetSprite("images\\dead.png", sf::IntRect(56, 48, 32, 32));
 	}
-	text.setString(str);
-	text.setStyle(sf::Text::Bold);
-	
-	window->draw(text);
 }
 sf::RectangleShape Mob::GetAttackShape() {
 	if (active_melee_weapon->GetState() == ATTACK)

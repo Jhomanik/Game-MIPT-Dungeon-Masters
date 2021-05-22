@@ -27,6 +27,7 @@ private:
 	std::vector <Object*> solid;
 	std::vector <Enemy*> enemies;
 	std::vector <MeleeWeapon*> Melee_weapons;
+	std::vector <Bullet*> bullets = {};
 	Map* mission_map;
 	MissionMenu* mission_menu;
 

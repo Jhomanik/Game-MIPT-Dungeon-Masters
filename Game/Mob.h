@@ -60,7 +60,7 @@ public:
 	Mob(const Mob& m);
 	
 	//setter для показателей
-	void SetSprite(std::string src, sf::IntRect frameRect);
+	
 	void SetSpeed(float speed);
 	void SetHealth(float health);
 	void SetLife(bool life);

@@ -19,6 +19,10 @@ Mission* Mission::save() {
 	for (auto e : enemies) {
 		ens.push_back(e->copy());
 	}
+	std::vector <Bullet*> new_bullets;
+	for (auto b : bullets) {
+		new_bullets.push_back(b->copy());
+	}
 	std::vector <MeleeWeapon*> weapons;
 	for (auto w : Melee_weapons) {
 		if (!w->GetWithMob())
@@ -55,6 +59,9 @@ void Mission::draw(sf::RenderWindow& window) {
 		for (auto w : Melee_weapons) {
 			if (!w->GetWithMob())
 				w->draw(&window);
+		}
+		for (auto b : bullets) {
+			b->draw(&window);
 		}
 		mission_player->draw(&window);
 		//Тескт для выхода
@@ -120,27 +127,40 @@ void Mission::update(float  elapsed_time, bool& is_mission, bool& is_restart) {
 	{
 		if (!is_menu)
 		{
-			enemy_count = enemies.size();
-			if (enemy_count != 0)
-				is_done = false;
-			else{
-				is_done = true;
-			}
-		
-			mission_player->update(solid, enemies, Melee_weapons, elapsed_time);
-			std::vector <Player*> players = { mission_player };
-			for (int i = 0; i < enemies.size(); i++) {
-				if (enemies[i]->GetIsLife())
-					enemies[i]->update(solid, players, elapsed_time);
+			if (mission_player->GetIsLife()) {
+
+				enemy_count = enemies.size();
+				if (enemy_count != 0)
+					is_done = false;
 				else {
-					enemies[i]->Kill();
-					enemies.erase(enemies.begin() + i);
+					is_done = true;
+				}
+
+				mission_player->update(solid, enemies, Melee_weapons, elapsed_time);
+				for (int i = 0; i < bullets.size(); i++) {
+					if (bullets[i]->GetState()) {
+						bullets.erase(bullets.begin() + i);
+					}
+					else {
+						bullets[i]->update(solid, mission_player, elapsed_time);
+					}
+				}
+
+
+				for (int i = 0; i < enemies.size(); i++) {
+					if (enemies[i]->GetIsLife())
+						enemies[i]->update(solid, mission_player, bullets, elapsed_time);
+					else {
+						enemies[i]->Kill();
+						enemies.erase(enemies.begin() + i);
+					}
+				}
+				for (auto mw : Melee_weapons) {
+					if (!mw->GetWithMob())
+						mw->update(elapsed_time, mission_player);
 				}
 			}
-			for (auto mw : Melee_weapons) {
-				if (!mw->GetWithMob())
-					mw->update(elapsed_time, mission_player);
-			}
+			
 		}
 		else
 		{
