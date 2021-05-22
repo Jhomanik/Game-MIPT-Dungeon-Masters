@@ -37,6 +37,11 @@ void Engine::draw() {
             }
 
             e_Window.draw(progress);
+
+            progress.setString("Developed by Sebastian Wolf");
+            progress.setScale(0.6, 1);
+            progress.setPosition(20 , VideoMode::getDesktopMode().height - 80);
+            e_Window.draw(progress);
         }
     }
     e_Window.display();
