@@ -71,17 +71,27 @@ void Mission::draw(sf::RenderWindow& window) {
 		Text task("", font, 80);
 		task.setFillColor(sf::Color::Red);
 		task.setStyle(sf::Text::Bold);
-		
-		if (!is_done) {
-			
-			task.setString("Enemies left :" + std::to_string(enemy_count));
+		if (mission_player->GetIsLife())
+		{
+			if (!is_done) {
+
+				task.setString("Enemies left :" + std::to_string(enemy_count));
+
+			}
+			else {
+				task.setString("Completed\n");
+			}
+			task.setPosition(VideoMode::getDesktopMode().width - task.getGlobalBounds().width - 50, VideoMode::getDesktopMode().height - task.getGlobalBounds().height - 50);
 
 		}
 		else {
-			task.setString("Completed\n");
+			
+			task.setString("YOU ARE DEAD");
+			task.setScale(2, 2);
+			task.setPosition(VideoMode::getDesktopMode().width - task.getGlobalBounds().width*1.3, VideoMode::getDesktopMode().height/2 - task.getLocalBounds().height*2);
+
 		}
 
-		task.setPosition(VideoMode::getDesktopMode().width - task.getGlobalBounds().width - 50, VideoMode::getDesktopMode().height - task.getGlobalBounds().height - 50);
 		window.draw(task);
 
 		//Инструкция для ламеров

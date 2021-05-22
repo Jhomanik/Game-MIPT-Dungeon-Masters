@@ -93,7 +93,7 @@ void Mob::TakeDamage(float damage, sf::Vector2f damage_dir, float attack_duratio
 
 
 		m_health = std::max(m_health -= damage, float(0));
-		immortal_timer = 1000;
+		immortal_timer = 500;
 		if (m_health == 0.) {
 			is_life = false;
 		}

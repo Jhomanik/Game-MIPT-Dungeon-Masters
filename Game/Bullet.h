@@ -9,7 +9,7 @@ private:
 protected:
 	float bul_speed = 0.12;
 	sf::Vector2f bul_dir = sf::Vector2f(0, 0);
-	float damage = 30;
+	float damage = 15;
 	bool is_destroy = false;
 
 

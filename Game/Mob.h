@@ -94,7 +94,7 @@ public:
 			attack_rect = sf::FloatRect(position.x + size.x / 2 - attack_rad, position.y + size.y / 2 - attack_rad, 2 * attack_rad, 2 * attack_rad);
 			for (auto enemy : enemies) {
 				if (attack_rect.intersects(enemy->GetRect())) {
-					enemy->TakeDamage(attack_damage, position + sf::Vector2f(size.x / 2, size.y / 2), attack_damage / 10 * 100);
+					enemy->TakeDamage(attack_damage, position + sf::Vector2f(size.x / 2, size.y / 2), attack_damage *active_melee_weapon->GetRecoil());
 				}
 			}
 		}

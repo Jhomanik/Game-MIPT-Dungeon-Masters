@@ -19,7 +19,8 @@ private:
 	float cooldown_timer = 0;
 	float attack_timer = 0;
 	float attack_rad = 30;
-	float attack_damage = 1000;
+	float attack_damage = 10;
+	float recoil_power = 10;
 	sf::FloatRect attack_rect;
 
 	//У игрока
@@ -39,6 +40,7 @@ public:
 	void draw(sf::RenderWindow* window);
 	void SetAttackTimer(float time);
 	void SetMeleeWeapon(float cool_time, float a_time, float a_rad, float a_damage);
+	void SetRecoil(float recoil);
 
 	p_attack_state GetState();
 	float GetRad();
@@ -46,6 +48,7 @@ public:
 	float GetCooldown();
 	bool GetIsHands();
 	bool GetWithMob();
+	float GetRecoil();
 
 	void ChangeIsHands();
 	void DisconnectWithMob();

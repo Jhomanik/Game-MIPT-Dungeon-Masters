@@ -53,7 +53,12 @@ void MeleeWeapon::CheckAttack() {
 		p_attack = READY;
 	}
 }
-
+void MeleeWeapon::SetRecoil(float recoil) {
+	recoil_power = recoil;
+}
+float MeleeWeapon::GetRecoil() {
+	return recoil_power;
+}
 void MeleeWeapon::input() {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::G) || sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
 		is_pressed_attack = true;

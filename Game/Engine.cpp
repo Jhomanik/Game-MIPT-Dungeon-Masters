@@ -71,14 +71,22 @@ void Engine::start() {
 		new Object(0, 32 * 10, 32 * 65, 32, "wall", "solid"),
 		new Object(32 * 50, 32 * 5, 32, 32 * 8, "wall", "solid")
 		});
-	std::vector <Enemy*> enemies = { new Enemy(sf::Vector2f(32 * 55,32 * 7), sf::Vector2f(32 + 12,28),"knight","enemy","images\\roguelikeitems.png",IntRect(32 * 5 - 10, 32 * 14 - 10, 32 + 12, 32)) };
-	//new Enemy(sf::Vector2f(100,200), sf::Vector2f(32 + 12,28),"knight","enemy","images\\roguelikeitems.png",IntRect(32 * 5 - 10, 32 * 14 - 10, 32 + 12, 32)),
-	//new Enemy(sf::Vector2f(350,200), sf::Vector2f(32 + 12,28),"Tkach","enemy","images\\roguelikeitems.png",IntRect(0, 32 * 16 - 20, 32 + 12, 28)) }; //IntRect(0, 32 * 16 - 20, 32 + 12, 28)
-	enemies[0]->SetHealth(50);
+	std::vector <Enemy*> enemies = {  
+	new Enemy(sf::Vector2f(300,70), sf::Vector2f(32 + 12,28),"knight","enemy","images\\roguelikeitems.png",IntRect(32 * 5 - 10, 32 * 14 - 10, 32 + 12, 32)),
+	new Enemy(sf::Vector2f(1200,70), sf::Vector2f(32 + 12,28),"Tkach","enemy","images\\roguelikeitems.png",IntRect(32 * 5 - 10, 32 * 14 - 10, 32 + 12, 32)),
+	new Enemy(sf::Vector2f(32 * 55,32 * 7), sf::Vector2f(32 + 12,28),"knight","enemy","images\\roguelikeitems.png",IntRect(32 * 5 - 10, 32 * 14 - 10, 32 + 12, 32)) }; //IntRect(0, 32 * 16 - 20, 32 + 12, 28)
+	enemies[0]->SetHealth(30);
+	enemies[0]->SetAgression(PEACEFULL);
+	
+	enemies[1]->SetHealth(30);
+	enemies[1]->SetAgression(PEACEFULL);
 
-	std::vector <MeleeWeapon*> m_weapons = { new MeleeWeapon(1500,100, 50, 20, sf::Vector2f(32 * 18, 32 * 7), sf::Vector2f(32 + 14,32 + 10),"sword","m_weapon","images\\roguelikeitems.png",IntRect(0, 32 * 11 - 10, 32 + 14, 32 + 10)),
-		new MeleeWeapon(2500,100, 55, 100, sf::Vector2f(300,200), sf::Vector2f(32 + 14,32 + 10),"axe","m_weapon","images\\roguelikeitems.png",IntRect(32 * 6, 32 * 11 - 10, 32 + 14, 32 + 10)) };
-	enemies[0]->SetMeleeWeapon(m_weapons[1]);
+	enemies[2]->SetHealth(100);
+	
+
+	std::vector <MeleeWeapon*> m_weapons = { new MeleeWeapon(1200,100, 50, 20, sf::Vector2f(32 * 18, 32 * 7), sf::Vector2f(32 + 14,32 + 10),"sword","m_weapon","images\\roguelikeitems.png",IntRect(0, 32 * 11 - 10, 32 + 14, 32 + 10)),
+		new MeleeWeapon(2000,100, 55, 50, sf::Vector2f(300,200), sf::Vector2f(32 + 14,32 + 10),"axe","m_weapon","images\\roguelikeitems.png",IntRect(32 * 6, 32 * 11 - 10, 32 + 14, 32 + 10)) };
+	enemies[1]->SetMeleeWeapon(m_weapons[1]);
 	std::string  m1_name = "Tutorial";
 
 	//
@@ -195,6 +203,7 @@ void Engine::start() {
 		new MeleeWeapon(1500,100, 50, 20, sf::Vector2f(32 * 18, 32 * 7), sf::Vector2f(32 + 14,32 + 10),"sword","m_weapon","images\\roguelikeitems.png",IntRect(0, 32 * 11 - 10, 32 + 14, 32 + 10)),
 		new MeleeWeapon(1500,100, 50, 10, sf::Vector2f(32 * 34, 32 * 19), sf::Vector2f(32 + 14,32 + 10),"ring","m_weapon","images\\roguelikeitems.png",IntRect(193, 99, 32 + 14, 32 + 10)),
 	};
+	m_weapons[7]->SetRecoil(1000);
 	enemies[1]->SetMeleeWeapon(m_weapons[1]);
 	enemies[2]->SetMeleeWeapon(m_weapons[6]);
 	enemies[3]->SetMeleeWeapon(m_weapons[3]);
