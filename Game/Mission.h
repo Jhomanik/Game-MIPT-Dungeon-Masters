@@ -13,6 +13,8 @@ public:
 	bool is_menu = false;
 	bool is_done;
 	bool show_inst = true;
+	bool show_inv = true;
+	bool player_dead = false;
 	void draw(sf::RenderWindow& window);
 	void update(float elapsed_time, bool& is_mission, bool& is_restart);
 	void input();
@@ -28,10 +30,11 @@ private:
 	std::vector <Enemy*> enemies;
 	std::vector <MeleeWeapon*> Melee_weapons;
 	std::vector <Bullet*> bullets = {};
+	std::vector <Vector2f> death_coor = {};
+	sf::Sprite death_sprite;
+	sf::Texture death_texture;
 	Map* mission_map;
 	MissionMenu* mission_menu;
-
-	
 	Player* mission_player;
 	
 };

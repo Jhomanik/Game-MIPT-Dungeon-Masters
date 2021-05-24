@@ -30,16 +30,23 @@ Menu::Menu(float width, float height, std::vector <Button*>& buttons)
 	menu[selectedItemIndex]->SelectButton();
 }
 
-
-void Menu::draw(sf::RenderWindow& window)						
-{
-	window.draw(sprite);
-	for (int i = 0; i < MAX_NUMBER_OF_ITEMS; i++)
-	{
-		menu[i]->draw(window);
+void Menu::SetSprite(std::string& src) {
+	src_image = src;
+	if (!texture.loadFromFile(src)) {
+		std::cout << "error texture" << std::endl;
 	}
-	window.draw(title);
+	sprite.setTexture(texture);
+
 }
+void Menu::SetTitle(std::string& title_src) {
+	title_source = title_src;
+	title.setFont(font);
+	title.setString(title_src);
+	title.setPosition(sf::Vector2f(menu_width / 2 - title.getGlobalBounds().width / 2 * 3, 20));
+	title.setScale(3, 2.5);
+	title.setFillColor(sf::Color::White);
+}
+
 
 
 void Menu::MoveUp()
@@ -81,22 +88,14 @@ void Menu::input() {
 		}
 	}
 }
-
-void Menu::SetSprite(std::string& src) {
-	src_image = src;
-	if (!texture.loadFromFile(src)) {											//Çàäàåì çàäíèé ôîí
-		std::cout << "error texture" << std::endl;
+void Menu::draw(sf::RenderWindow& window)
+{
+	window.draw(sprite);
+	for (int i = 0; i < MAX_NUMBER_OF_ITEMS; i++)
+	{
+		menu[i]->draw(window);
 	}
-	sprite.setTexture(texture);
-
+	window.draw(title);
 }
-void Menu::SetTitle(std::string& title_src) {
-	title_source = title_src;
-	title.setFont(font);
-	title.setString(title_src);
 
 
-	title.setPosition(sf::Vector2f(menu_width / 2 - title.getGlobalBounds().width/2*3,20));
-	title.setScale(3, 2.5);
-	title.setFillColor(sf::Color::White);
-}

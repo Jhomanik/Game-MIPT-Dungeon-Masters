@@ -4,17 +4,7 @@
 
 
 Map::Map() {
-	//поставить assert на ошибку загрузки
-	//Загружаем дефолтную картинку в техтуру карты
-	map_image.loadFromFile("images\\swamp.png");
-	t_map.loadFromImage(map_image);
-	s_map.setTexture(t_map);
-	
-	//Параметры для рисовки Tile
-	Map_size = sf::Vector2f(1, 1);
-	Map_position = sf::Vector2f(0, 0);
-	
-	
+
 }
 
 Map* Map::copy() {
@@ -24,32 +14,6 @@ Map* Map::copy() {
 	return m;
 }
 
-
-void  Map::draw(RenderWindow* window) {
-
-	for (auto l : layers) {
-		sf::Sprite s;
-		sf::Texture t;
-		sf::Image i;
-		i.loadFromFile(l.src);
-		t.loadFromImage(i);
-		s.setTexture(t);
-		for (int i = 0; i < l.layer_size.x; i++)
-		{
-			for (int j = 0; j < l.layer_size.y; j++)
-			{
-
-				s.setTextureRect(l.layer_dict[l.Tile_Layer[i][j]]);
-				s.setPosition(j * l.layer_size_of_texture.y, i * l.layer_size_of_texture.x);
-				//по сути раскидывает квадратики, превращая в карту. 
-				window->draw(s);
-			}
-
-		}
-	}
-
-
-}
 void Map::SetMapObjects(std::vector <Object*> objects) {
 	objs = objects;
 }
@@ -95,4 +59,27 @@ Object* Map::GetObjectByType(std::string type) {
 			return o;
 	}
 	return NULL;
+}
+void  Map::draw(RenderWindow* window) {
+
+	for (auto l : layers) {
+		sf::Sprite s;
+		sf::Texture t;
+		sf::Image i;
+		i.loadFromFile(l.src);
+		t.loadFromImage(i);
+		s.setTexture(t);
+		for (int i = 0; i < l.layer_size.x; i++)
+		{
+			for (int j = 0; j < l.layer_size.y; j++)
+			{
+
+				s.setTextureRect(l.layer_dict[l.Tile_Layer[i][j]]);
+				s.setPosition(j * l.layer_size_of_texture.y, i * l.layer_size_of_texture.x);
+				//по сути раскидывает квадратики, превращая в карту. 
+				window->draw(s);
+			}
+
+		}
+	}
 }

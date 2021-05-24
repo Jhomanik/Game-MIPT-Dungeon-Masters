@@ -12,8 +12,8 @@ Player::Player(sf::Vector2f pos, sf::Vector2f size, std::string o_name, std::str
 void Player::input() {
 	bool is_pressed_move = 0;
 	bool is_pressed_mweapon = 0;
-	//перенести это в метод Mob,а тут чисто распределение кому считывать input меню или игроку
-	if (Keyboard::isKeyPressed(Keyboard::F)) {
+
+	if (Keyboard::isKeyPressed(Keyboard::F) or sf::Mouse::isButtonPressed(sf::Mouse::Right)) {
 		mweapon_state = TAKE;
 		is_pressed_mweapon = 1;
 		

@@ -16,7 +16,7 @@ struct Layer {
 };
 class Map: public drawable {
 private:
-	//Загружаем дефолтную картинку в техтуру карты
+	
 	Image map_image;
 	Texture t_map;
 	Sprite s_map;
@@ -41,10 +41,12 @@ public:
 	Vector2f GetSize();
 	//Выдаёт координаты левого верхнего угла
 	Vector2f GetPos();
-	//Унаследованный метод, рисующий карту
-	void draw(RenderWindow* window);
 	std::vector <Object*> GetObjectsByName(std::string name);
 	Object* GetObjectByName(std::string name);
 	std::vector <Object*> GetObjectsByType(std::string type);
 	Object* GetObjectByType(std::string type);
+
+	//Унаследованный метод, рисующий карту
+	void draw(RenderWindow* window);
+
 };

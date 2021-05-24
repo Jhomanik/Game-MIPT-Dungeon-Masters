@@ -15,13 +15,9 @@ Mob::Mob():Object(){
 	is_life = true;
 	active_melee_weapon = new MeleeWeapon;
 	
-	image.loadFromFile("images\\default.png");
-	texture.loadFromImage(image);
-	sprite.setTexture(texture);
-	sprite.setPosition(position);
 }
 Mob::Mob(float left, float top, float w, float h, std::string o_name, std::string o_type, std::string sprite_src, sf::IntRect frameRect):Object(left,top,w,h,o_name,o_type, sprite_src, frameRect) {
-	m_health = 100;
+	
 
 	m_dir = STOP;
 	hands = new MeleeWeapon;
@@ -38,22 +34,17 @@ Mob::Mob(float left, float top, float w, float h, std::string o_name, std::strin
 }
 
 Mob::Mob(sf::Vector2f pos, sf::Vector2f size, std::string o_name, std::string o_type, std::string sprite_src, sf::IntRect frameRect) :Object(pos,size, o_name, o_type, sprite_src, frameRect) {
-	m_health = 100;
-
+	
 	m_dir = STOP;
 	is_life = true;
 	hands = new MeleeWeapon;
 	m_weapon = nullptr;
-	active_melee_weapon = hands;
-
-	
+	active_melee_weapon = hands;	
 	glove_image.loadFromFile("images\\glove.png");
 	glove_texture.loadFromImage(glove_image);
 	glove.setTexture(glove_texture);
 	glove.scale(0.5, 0.5);
-	
-	
-	
+
 }
 
 
@@ -74,7 +65,14 @@ void Mob::SetMobParams(float health, float speed) {
 	m_health = health;
 	m_speed = speed;
 }
-
+void Mob::SetMeleeWeapon(MeleeWeapon* melee_weapon) {
+	if (m_weapon != nullptr) {
+		m_weapon->DisconnectWithMob();
+	}
+	m_weapon = melee_weapon;
+	active_melee_weapon = melee_weapon;
+	melee_weapon->ConnectWithMob();
+}
 
 bool Mob::GetIsLife() {
 	return is_life;
@@ -82,6 +80,25 @@ bool Mob::GetIsLife() {
 float Mob::GetHealth() {
 	return m_health;
 }
+sf::RectangleShape Mob::GetAttackShape() {
+	if (active_melee_weapon->GetState() == ATTACK)
+	{
+		sf::RectangleShape rect = sf::RectangleShape(sf::Vector2f(2 * active_melee_weapon->GetRad(), 2 * active_melee_weapon->GetRad()));
+		rect.setPosition(sf::Vector2f(position.x + size.x / 2 - active_melee_weapon->GetRad(), position.y + size.y / 2 - active_melee_weapon->GetRad()));
+		rect.setFillColor(Color::Red);
+		return rect;
+	}
+	else
+		return sf::RectangleShape(sf::Vector2f(0, 0));
+}
+MeleeWeapon* Mob::GetMW() {
+	return m_weapon;
+}
+MeleeWeapon* Mob::GetActiveMV() {
+	return active_melee_weapon;
+}
+
+
 void Mob::TakeDamage(float damage, sf::Vector2f damage_dir, float attack_duration) {
 	if (immortal_timer == 0.)
 	{
@@ -175,6 +192,8 @@ void Mob::draw(sf::RenderWindow* window) {
 			}
 			text.setPosition(position - sf::Vector2f(0, 40));
 			text.setFillColor(sf::Color::Green);
+
+			
 		}
 		else {
 			text.setPosition(position - sf::Vector2f(0, 25));
@@ -184,22 +203,9 @@ void Mob::draw(sf::RenderWindow* window) {
 
 		window->draw(text);
 	}
-	else {
-		SetSprite("images\\dead.png", sf::IntRect(56, 48, 32, 32));
-	}
-}
-sf::RectangleShape Mob::GetAttackShape() {
-	if (active_melee_weapon->GetState() == ATTACK)
-	{
-		sf::RectangleShape rect = sf::RectangleShape(sf::Vector2f(2*active_melee_weapon->GetRad(), 2*active_melee_weapon->GetRad()));
-		rect.setPosition(sf::Vector2f(position.x + size.x / 2 - active_melee_weapon->GetRad(), position.y + size.y / 2 - active_melee_weapon->GetRad()));
-		rect.setFillColor(Color::Red);
-		return rect;
-	}
-	else
-		return sf::RectangleShape(sf::Vector2f(0,0));
 	
 }
+
 void Mob::SwapMeleeWeapon() {
 	if (m_weapon != nullptr and active_melee_weapon == hands) {
 		active_melee_weapon = m_weapon;
@@ -212,14 +218,7 @@ void Mob::SwapMeleeWeapon() {
 		return;
 	}
 }
-void Mob::SetMeleeWeapon(MeleeWeapon* melee_weapon) {
-	if (m_weapon != nullptr) {
-		m_weapon->DisconnectWithMob();
-	}
-	m_weapon = melee_weapon;
-	active_melee_weapon = melee_weapon;
-	melee_weapon->ConnectWithMob();
-}
+
 void Mob::DropMeleeWeapon() {
 	if (active_melee_weapon != hands) 
 	{
@@ -234,7 +233,5 @@ void Mob::Kill() {
 		m_weapon->DisconnectWithMob();
 	}
 }
-MeleeWeapon* Mob::GetMW() {
-	return m_weapon;
-}
+
 

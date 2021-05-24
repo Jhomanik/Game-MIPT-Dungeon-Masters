@@ -35,9 +35,7 @@ public:
 	MeleeWeapon(float cool_time, float a_time, float a_rad, float a_damage, float left, float top, float w, float h, std::string o_name, std::string o_type, std::string sprite_src, sf::IntRect frameRect);
 	MeleeWeapon(float cool_time, float a_time, float a_rad, float a_damage, sf::Vector2f pos, sf::Vector2f size, std::string o_name, std::string o_type, std::string sprite_src, sf::IntRect frameRect);
 	
-	void input();
-	MeleeWeapon* copy();
-	void draw(sf::RenderWindow* window);
+
 	void SetAttackTimer(float time);
 	void SetMeleeWeapon(float cool_time, float a_time, float a_rad, float a_damage);
 	void SetRecoil(float recoil);
@@ -46,13 +44,18 @@ public:
 	float GetRad();
 	float GetDamage();
 	float GetCooldown();
+	float GetCooldownTime();
 	bool GetIsHands();
 	bool GetWithMob();
 	float GetRecoil();
 
+	MeleeWeapon* copy();
 	void ChangeIsHands();
 	void DisconnectWithMob();
 	void ConnectWithMob();
+
+	void input();
+	void draw(sf::RenderWindow* window);
 	template <class T>
 	void update(float elapsed_time, T* mob) {
 		CheckAttack();

@@ -24,23 +24,16 @@ public:
 	void SetDiraction(sf::Vector2f dir);
 
 	bool GetState();
-	void update(std::vector <Object*> solid, Player* p,float elapsed_time);
-	void draw(sf::RenderWindow* window);
 
 	
 
-	void CheckCollision(std::vector <Object*> solid, Player* p) {
-		for (auto s : solid) {
-			if (s->GetRect().intersects(this->GetRect())) {
-				is_destroy = true;
-			}
-		}
-		if (p->GetRect().intersects(this->GetRect())) {
-			p->TakeDamage(damage, bul_dir, damage / 10 * 100);
-			is_destroy = true;
-		}
-	}
+	
+
+	void CheckCollision(std::vector <Object*> solid, Player* p);
 	Bullet* copy();
+
+	void update(std::vector <Object*> solid, Player* p, float elapsed_time);
+	void draw(sf::RenderWindow* window);
 
 
 

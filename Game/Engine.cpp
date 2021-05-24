@@ -1,13 +1,10 @@
 #include "Engine.h"
-#include <fstream>
+
 Engine::Engine() {
 	Vector2f resolution;
 	resolution.x = VideoMode::getDesktopMode().width;
 	resolution.y = VideoMode::getDesktopMode().height;
 	e_Window.create(VideoMode(resolution.x,resolution.y), "Game",Style::Fullscreen);
-	background_image.loadFromFile("images\\swamp.png");
-	background_texture.loadFromImage(background_image);
-	background_sprite.setTexture(background_texture);
 	mission = NULL;
 	r_mission = NULL;
 	is_mission = false;
@@ -20,9 +17,9 @@ void Engine::start() {
 	Clock clock;
 
 	//Меню 
-	std::vector <Button*> main_menu_buttons = { new Button ("Fonts\\CyrilicOld.TTF", "Play"),
-									new Button("Fonts\\CyrilicOld.TTF", "Choose Mission"),
-									new Button("Fonts\\CyrilicOld.TTF", "Exit to Desktop") };
+	std::vector <Button*> main_menu_buttons = { new Button ("Fonts\\CyrilicOld.ttf", "Play"),
+									new Button("Fonts\\CyrilicOld.ttf", "Choose Mission"),
+									new Button("Fonts\\CyrilicOld.ttf", "Exit to Desktop") };
 	main_menu = new MainMenu (e_Window.getSize().x, e_Window.getSize().y, main_menu_buttons);
 	std::string title = std::string("MIPT DUNGEON MASTERS");
 	main_menu->SetTitle(title);
@@ -31,9 +28,9 @@ void Engine::start() {
 
 
 	//Задание миссии 1
-	std::vector <Button*> mission_menu_buttons = { new Button("Fonts\\CyrilicOld.TTF", "Continue mission"),
-		new Button("Fonts\\CyrilicOld.TTF", "Restart"),
-		new Button("Fonts\\CyrilicOld.TTF", "Exit to main menu") };
+	std::vector <Button*> mission_menu_buttons = { new Button("Fonts\\CyrilicOld.ttf", "Continue mission"),
+		new Button("Fonts\\CyrilicOld.ttf", "Restart"),
+		new Button("Fonts\\CyrilicOld.ttf", "Exit to main menu") };
 	MissionMenu* mission_menu = new MissionMenu(e_Window.getSize().x, e_Window.getSize().y, mission_menu_buttons);
 	std::string src = std::string("images\\mission_menu_background.jpg");
 	mission_menu->SetSprite(src);
@@ -156,7 +153,7 @@ void Engine::start() {
 		new Object(32 * 48, 32 * 15, 32 * 3, 32, "wall", "solid"),
 		new Object(32 * 54, 32 * 15, 32 * 3, 32, "wall", "solid"),
 		new Object(32 * 54, 32 * 10, 32 * 3, 32, "wall", "solid"),
-		new Object(0, 32 * 5, 32, 32 * 5, "wall", "solid"),			//
+		new Object(0, 32 * 5, 32, 32 * 5, "wall", "solid"),			
 		new Object(32 * 5, 0, 32, 32 * 5, "wall", "solid"),
 		new Object(32 * 5, 32 * 9, 32, 32 * 5, "wall", "solid"),
 		new Object(32 * 15, 0, 32, 32 * 5, "wall", "solid"),
@@ -174,34 +171,24 @@ void Engine::start() {
 		new Object(32 * 52, 32 * 7, 32, 32 * 2, "wall", "solid"),
 		new Object(32 * 59, 0, 32, 32 * 24,"wall", "solid"),
 		new Object(32 * 54, 32 * 15, 32, 32 * 7, "wall", "solid")
-
-
-
-
-
-
-
-
-
-
 		});
 	enemies = { new Enemy(sf::Vector2f(32 * 9,32 * 2), sf::Vector2f(32 + 12,28),"knight","enemy","images\\roguelikeitems.png",IntRect(32 * 5 - 10, 32 * 14 - 10, 32 + 12, 32)),
-	new Enemy(sf::Vector2f(32 * 55,32 * 7), sf::Vector2f(32 + 12,28),"tkach","enemy","images\\roguelikeitems.png",IntRect(0, 32 * 16 - 20, 32 + 12, 28)),
+	new Enemy(sf::Vector2f(32 * 54,32 * 7), sf::Vector2f(32 + 12,28),"tkach","enemy","images\\roguelikeitems.png",IntRect(0, 32 * 16 - 20, 32 + 12, 28)),
 	new Enemy(sf::Vector2f(32 * 9,32 * 11), sf::Vector2f(32 + 12,28),"knight","enemy","images\\roguelikeitems.png",IntRect(32 * 5 - 10, 32 * 14 - 10, 32 + 12, 32)),
 	new Enemy(sf::Vector2f(32 * 40,32 * 2), sf::Vector2f(32 + 12,28),"knight","enemy","images\\roguelikeitems.png",IntRect(32 * 5 - 10, 32 * 14 - 10, 32 + 12, 32)),
-	new Enemy(sf::Vector2f(32 * 42,32 * 11), sf::Vector2f(32 + 12,28),"knight","enemy","images\\roguelikeitems.png",IntRect(32 * 5 - 10, 32 * 14 - 10, 32 + 12, 32)),
+	new Enemy(sf::Vector2f(32 * 41,32 * 11), sf::Vector2f(32 + 12,28),"knight","enemy","images\\roguelikeitems.png",IntRect(32 * 5 - 10, 32 * 14 - 10, 32 + 12, 32)),
 	new Enemy(sf::Vector2f(32 * 18,32 * 21), sf::Vector2f(32 + 12,28),"tkach","enemy","images\\roguelikeitems.png",IntRect(0, 32 * 16 - 20, 32 + 12, 28)),
 	}; //IntRect(0, 32 * 16 - 20, 32 + 12, 28)
 	enemies[0]->SetHealth(300);
 
 	m_weapons = { new MeleeWeapon(1500,100, 50, 20, sf::Vector2f(32 * 18, 32 * 7), sf::Vector2f(32 + 14,32 + 10),"sword","m_weapon","images\\roguelikeitems.png",IntRect(0, 32 * 11 - 10, 32 + 14, 32 + 10)),
 		new MeleeWeapon(2500,100, 55, 100, sf::Vector2f(300,200), sf::Vector2f(32 + 14,32 + 10),"axe","m_weapon","images\\roguelikeitems.png",IntRect(32 * 6, 32 * 11 - 10, 32 + 14, 32 + 10)),
-		new MeleeWeapon(200,100, 10000, 20, sf::Vector2f(32 * 16,32 * 20), sf::Vector2f(32 + 14,32 + 10),"axe","m_weapon","images\\roguelikeitems.png",IntRect(147, 528, 32 + 14, 32 + 10)),
+		new MeleeWeapon(200,100, 250, 20, sf::Vector2f(32 * 16,32 * 20), sf::Vector2f(32 + 14,32 + 10),"wabbajack","m_weapon","images\\roguelikeitems.png",IntRect(147, 528, 32 + 14, 32 + 10)),
 		new MeleeWeapon(1500,100, 50, 20, sf::Vector2f(32 * 18, 32 * 7), sf::Vector2f(32 + 14,32 + 10),"sword","m_weapon","images\\roguelikeitems.png",IntRect(0, 32 * 11 - 10, 32 + 14, 32 + 10)),
 		new MeleeWeapon(1500,100, 50, 20, sf::Vector2f(32 * 18, 32 * 7), sf::Vector2f(32 + 14,32 + 10),"sword","m_weapon","images\\roguelikeitems.png",IntRect(0, 32 * 11 - 10, 32 + 14, 32 + 10)),
 		new MeleeWeapon(1500,100, 50, 20, sf::Vector2f(32 * 18, 32 * 7), sf::Vector2f(32 + 14,32 + 10),"sword","m_weapon","images\\roguelikeitems.png",IntRect(0, 32 * 11 - 10, 32 + 14, 32 + 10)),
 		new MeleeWeapon(1500,100, 50, 20, sf::Vector2f(32 * 18, 32 * 7), sf::Vector2f(32 + 14,32 + 10),"sword","m_weapon","images\\roguelikeitems.png",IntRect(0, 32 * 11 - 10, 32 + 14, 32 + 10)),
-		new MeleeWeapon(1500,100, 50, 10, sf::Vector2f(32 * 34, 32 * 19), sf::Vector2f(32 + 14,32 + 10),"ring","m_weapon","images\\roguelikeitems.png",IntRect(193, 99, 32 + 14, 32 + 10)),
+		new MeleeWeapon(1500,100, 50, 10, sf::Vector2f(32 * 34, 32 * 18), sf::Vector2f(32 + 14,32 + 10),"ring","m_weapon","images\\roguelikeitems.png",IntRect(193, 99, 32 + 14, 32 + 10)),
 	};
 	m_weapons[7]->SetRecoil(1000);
 	enemies[1]->SetMeleeWeapon(m_weapons[1]);

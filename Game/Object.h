@@ -7,11 +7,10 @@ class Object
 protected:
 	//Имя объекта
 	std::string name;
-	//Тип - твёрдый, интерактивный и т.д
 	std::string type;
 	//Позиция прямоугольника - (координаты левого верхнего угла)
 	sf::Vector2f position;
-	//размер - ()
+	
 	sf::Vector2f size;
 	std::string spr_source;
 	sf::IntRect frame_rect;
@@ -21,12 +20,11 @@ protected:
 
 
 public:
-	//3 конструктора - дефолтный, с 4 float и 2 Vector -когда пишите задание координат с векторами, обязательно добавляйте перегрузки для float и vector
 	Object(float left, float top, float w, float h, std::string o_name, std::string o_type, std::string sprite_src, sf::IntRect frameRect);
 	Object(sf::Vector2f pos, sf::Vector2f size,  std::string o_name, std::string o_type, std::string sprite_src, sf::IntRect frameRect);
 	Object(float left, float top, float w, float h, std::string o_name, std::string o_type);
 	Object(sf::Vector2f pos, sf::Vector2f size, std::string o_name, std::string o_type);
-	Object(const Object& obj);
+	
 	Object();
 	
 	//setter и getter для различных полей

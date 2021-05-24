@@ -27,7 +27,7 @@ private:
 protected:
 	//’арактеристики скорости, здоровь€ и направлени€ движени€
 	float m_speed = 0.4;
-	float m_health;
+	float m_health = 100;
 	m_dir_state m_dir;
 	m_mweapon_state mweapon_state = NOTHING;
 	bool is_life;
@@ -57,7 +57,7 @@ public:
 	//«десь по факту w и h задаютс€ framerect,но дл€ каноничноти € их не убрал, поэтому смотрите что в конструкторах задаЄте одинаково
 	Mob(float left, float top, float w, float h, std::string o_name, std::string o_type, std::string sprite_src, sf::IntRect frameRect);
 	Mob(sf::Vector2f pos, sf::Vector2f size, std::string o_name, std::string o_type, std::string sprite_src, sf::IntRect frameRect);
-	Mob(const Mob& m);
+	
 	
 	//setter дл€ показателей
 	
@@ -69,22 +69,22 @@ public:
 	void SetMeleeWeapon(MeleeWeapon* melee_weapon);
 
 	float GetHealth();
+	bool GetIsLife();
+	MeleeWeapon* GetMW();
+	MeleeWeapon* GetActiveMV(); 
+	sf::RectangleShape GetAttackShape();
+
 	void Kill();
 	void TakeDamage(float damage, sf::Vector2f damage_dir, float attack_duration);
 	void SwapMeleeWeapon();
 	void DropMeleeWeapon();
-	MeleeWeapon* GetMW();
-	bool GetIsLife();
-	//–исование и обновление позиций игрока
-	void draw(sf::RenderWindow* window);
-	sf::RectangleShape GetAttackShape();
-
-	
-	
-
-	//optimize it Ќужно дл€ проверки столкновени€ моба с картой
+	//Ќужно дл€ проверки столкновени€ моба с картой
 	void CheckCollisionsWithMap(std::vector<Object*>& solid, float Dx, float Dy);
 
+
+	//–исование и обновление позиций игрока
+	void draw(sf::RenderWindow* window);
+	
 	template <class T>
 	void  attack(std::vector <T*>& enemies) {
 		if (active_melee_weapon->GetState() == ATTACK) {
@@ -111,7 +111,4 @@ public:
 		}
 		return nullptr;
 	}
-
-	
-	
 };

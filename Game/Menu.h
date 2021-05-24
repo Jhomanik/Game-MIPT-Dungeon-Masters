@@ -7,27 +7,27 @@ class Menu
 public:
 	Menu(float width, float height, std::vector <Button*>& buttons);
 	void SetSprite(std::string& src);
-	sf::Text title;
-	void draw(sf::RenderWindow& window);   //Îòðèñîâêà ìåíþ
-	void MoveUp();                              //Îòâå÷àåò çà ñìåíó êíîïêè ïðè íàæàòèè ââåðõ  
-	void MoveDown();     
-	void input();//Àíàëîãè÷íî äëÿ íèçà
-	int getPressedItem() { return selectedItemIndex; } //Âñïîìîãàòåëüíàÿ ôóíöèÿ äëÿ ñ÷åò÷èêà êíîïîê
 	void SetTitle(std::string& title_str);
+	int GetPressedItem() { return selectedItemIndex; } 
+
+	void MoveUp();                            
+	void MoveDown();
+
+	void draw(sf::RenderWindow& window);
+	void input();
+
 
 protected:
 	std::vector <Button*> menu;
 	int MAX_NUMBER_OF_ITEMS;
 	bool is_first_pressed = false;
-
-
+	sf::Text title;
 	int selectedItemIndex;
 	sf::Font font;
 	sf::Texture texture;
 	sf::Sprite sprite;
 	float menu_width, menu_height;
 	std::string src_image;
-	
 	std::string title_source;
 	
 };

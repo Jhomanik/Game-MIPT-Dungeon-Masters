@@ -46,14 +46,6 @@ Object::Object() {
 
 }
 
-Object::Object(const Object& obj) {
-	size = obj.size;
-	image = obj.image;
-	position = obj.position;
-	texture = obj.texture;
-	name = obj.name;
-	type = obj.type;
-}
 
 void Object::SetObject(sf::Vector2f pos, sf::Vector2f size, std::string o_name, std::string o_type) {
 	position = pos;
@@ -81,6 +73,17 @@ void Object::SetType(std::string o_type) {
 void Object::SetName(std::string o_name) {
 	name = o_name;
 }
+void Object::SetSprite(std::string src, sf::IntRect frameRect) {
+	image.loadFromFile(src);
+	texture.loadFromImage(image);
+	sprite.setTexture(texture);
+	sprite.setTextureRect(frameRect);
+	size = sf::Vector2f(frameRect.height, frameRect.width);
+	spr_source = src;
+	frame_rect = frameRect;
+}
+
+
 sf::Vector2f Object::GetPos() {
 	return position;
 }
@@ -99,13 +102,4 @@ std::string Object::GetType() {
 }
 std::string Object::GetName() {
 	return name;
-}
-void Object::SetSprite(std::string src, sf::IntRect frameRect) {
-	image.loadFromFile(src);
-	texture.loadFromImage(image);
-	sprite.setTexture(texture);
-	sprite.setTextureRect(frameRect);
-	size = sf::Vector2f(frameRect.height, frameRect.width);
-	spr_source = src;
-	frame_rect = frameRect;
 }

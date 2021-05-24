@@ -10,6 +10,9 @@ Mission::Mission(Map* map, Player* p, std::vector <Enemy*>& enemies_vec, std::ve
 	Melee_weapons = m_weapons;
 	enemy_count = enemies.size();
 	mission_name = name;
+	death_texture.loadFromFile("images\\dead.png");
+	death_sprite.setTexture(death_texture);
+	death_sprite.setTextureRect(sf::IntRect(40, 40, 60, 60));
 }
 Mission* Mission::save() {
 	Map* map = mission_map->copy();
@@ -18,6 +21,10 @@ Mission* Mission::save() {
 	std::vector <Enemy*> ens;
 	for (auto e : enemies) {
 		ens.push_back(e->copy());
+	}
+	std::vector <sf::Vector2f> new_death_coor;
+	for (auto c : death_coor) {
+		new_death_coor.push_back(c);
 	}
 	std::vector <Bullet*> new_bullets;
 	for (auto b : bullets) {
@@ -50,6 +57,10 @@ void Mission::draw(sf::RenderWindow& window) {
 	if (!is_menu)
 	{
 		mission_map->draw(&window);
+		for (auto c : death_coor) {
+			death_sprite.setPosition(c);
+			window.draw(death_sprite);
+		}
 		
 		window.draw(mission_player->GetAttackShape());
 		for (auto enemy : enemies) {
@@ -82,7 +93,44 @@ void Mission::draw(sf::RenderWindow& window) {
 				task.setString("Completed\n");
 			}
 			task.setPosition(VideoMode::getDesktopMode().width - task.getGlobalBounds().width - 50, VideoMode::getDesktopMode().height - task.getGlobalBounds().height - 50);
+			
+			Text inventory("", font, 45);
+			inventory.setFillColor(sf::Color::Black);
+			sf::Texture inv_list_texture;
+			inv_list_texture.loadFromFile("images\\list.png");
+			sf::Sprite inv_list_sprite;
+			inv_list_sprite.setTexture(inv_list_texture);
 
+			inventory.setStyle(sf::Text::Bold);
+			inventory.setScale(0.8, 1.2);
+			std::string s;
+			float delta;
+			if (show_inv)
+			{
+				s = "\t  Hide";
+				delta = 320;
+			}
+			else {
+				s = "   Inventory";
+				delta = 60;
+			}
+			inv_list_sprite.setPosition(500, VideoMode::getDesktopMode().height - 75 - delta);
+			MeleeWeapon* w = mission_player->GetActiveMV();
+			sf::Sprite w_sprite = w->GetSprite();
+			inventory.setString(s + "- Tab \n"  + "   Damage - " +  std::to_string((int) w->GetDamage()) + "\n"   + "   CD - " + std::to_string((int)w->GetCooldownTime()/100)+"\n   Recoil - " + std::to_string((int)w->GetRecoil())  + "\n   Rad - " + std::to_string((int)w->GetRad()));
+			inventory.setPosition(575, VideoMode::getDesktopMode().height - delta);
+			w_sprite.setPosition(765, VideoMode::getDesktopMode().height - delta + 270);
+			
+
+			window.draw(inv_list_sprite);
+			
+			window.draw(inventory);
+			
+			inventory.setString(w->GetName());
+			inventory.setPosition(-inventory.getGlobalBounds().width/2 + 700, VideoMode::getDesktopMode().height - delta + 250);
+			w_sprite.setPosition(inventory.getGlobalBounds().width/2   + 700 + 20, VideoMode::getDesktopMode().height - delta + 270);
+			window.draw(inventory);
+			window.draw(w_sprite);
 		}
 		else {
 			
@@ -94,7 +142,7 @@ void Mission::draw(sf::RenderWindow& window) {
 
 		window.draw(task);
 
-		//Инструкция для ламеров
+
 		
 		Text inst("", font, 45);
 		inst.setFillColor(sf::Color::Black);
@@ -113,11 +161,11 @@ void Mission::draw(sf::RenderWindow& window) {
 			delta = 320;
 		}
 		else{
-			s = "\t  Show";
+			s = "\t  Inst";
 			delta = 60;
 		}
 		list_sprite.setPosition(0, VideoMode::getDesktopMode().height - 75 -delta);
-		inst.setString(s + "- I \n Move - W,A,S,D\n Pick up - F \n Attack - G ,LMB \n Swap weapon - E \n Drop - Q");
+		inst.setString(s + "- I \n Move - W,A,S,D\n Pick up - F, RMB \n Attack - G, LMB \n Swap weapon - E \n Drop - Q");
 		inst.setPosition(90, VideoMode::getDesktopMode().height - delta);
 		window.draw(list_sprite);
 		window.draw(inst);
@@ -125,11 +173,7 @@ void Mission::draw(sf::RenderWindow& window) {
 	else
 	{
 		mission_menu->draw(window);
-	}
-
-
-	// Отображаем все, что нарисовали
-	
+	}	
 }
 
 void Mission::update(float  elapsed_time, bool& is_mission, bool& is_restart) {
@@ -161,6 +205,7 @@ void Mission::update(float  elapsed_time, bool& is_mission, bool& is_restart) {
 					if (enemies[i]->GetIsLife())
 						enemies[i]->update(solid, mission_player, bullets, elapsed_time);
 					else {
+						death_coor.push_back(enemies[i]->GetPos());
 						enemies[i]->Kill();
 						enemies.erase(enemies.begin() + i);
 					}
@@ -168,6 +213,20 @@ void Mission::update(float  elapsed_time, bool& is_mission, bool& is_restart) {
 				for (auto mw : Melee_weapons) {
 					if (!mw->GetWithMob())
 						mw->update(elapsed_time, mission_player);
+				}
+			}
+			else {
+				if (!player_dead) {
+					death_coor.push_back(mission_player->GetPos());
+					player_dead = true;
+				}
+				for (int i = 0; i < bullets.size(); i++) {
+					if (bullets[i]->GetState()) {
+						bullets.erase(bullets.begin() + i);
+					}
+					else {
+						bullets[i]->update(solid, mission_player, elapsed_time);
+					}
 				}
 			}
 			
@@ -194,6 +253,8 @@ void Mission::input() {
 		{
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::I))
 				show_inst = (show_inst) ? false : true;
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Tab))
+				show_inv = (show_inv) ? false : true;
 			mission_player->input();
 		}
 		else
